@@ -1,0 +1,68 @@
+
+ // ==UserScript==
+ // @name         988K10 - Teste de Execução
+ // @namespace    local.988k10
+ // @version      2.0
+ // @description  Verifica se o script está executando
+ // @match        *://988k10.com/*
+ // @match        *://*.988k10.com/*
+ // @run-at       document-start
+ // @grant        none
+ // ==/UserScript==
+
+ (function () {
+   'use strict';
+
+   console.log('[988K10 TESTE] Script carregado:', location.href);
+
+   function criarPainel() {
+     if (!document.body) return false;
+     if (document.getElementById('teste-988k10')) return true;
+
+     const painel = document.createElement('div');
+     painel.id = 'teste-988k10';
+
+     Object.assign(painel.style, {
+       position: 'fixed',
+       top: '10px',
+       right: '10px',
+       zIndex: '2147483647',
+       background: '#171717',
+       color: '#fff',
+       border: '2px solid #22c55e',
+       borderRadius: '8px',
+       padding: '12px',
+       font: '14px Arial, sans-serif',
+       maxWidth: '340px',
+       overflowWrap: 'anywhere'
+     });
+
+     const titulo = document.createElement('strong');
+     titulo.textContent = 'SCRIPT ATIVO';
+
+     const endereco = document.createElement('div');
+     endereco.style.marginTop = '8px';
+     endereco.textContent = 'Domínio: ' + location.hostname;
+
+     const estado = document.createElement('div');
+     estado.style.marginTop = '6px';
+     estado.textContent = 'Página detectada com sucesso.';
+
+     painel.append(titulo, endereco, estado);
+     document.body.appendChild(painel);
+
+     console.log('[988K10 TESTE] Painel criado');
+     return true;
+   }
+
+   if (!criarPainel()) {
+     const observador = new MutationObserver(() => {
+       if (criarPainel()) observador.disconnect();
+     });
+
+     observador.observe(document, {
+       childList: true,
+       subtree: true
+     });
+   }
+ })();
